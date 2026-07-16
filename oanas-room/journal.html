@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Journal — Oana's Room</title>
+<style>
+@font-face {
+  font-family: 'OanaSoulHand';
+  src: url('./OanaSoulHand-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+:root {
+  --cream: #FFF9F5;
+  --pink-light: #FFF0F0;
+  --pink: #FFDDE4;
+  --pink-mid: #F5B8C4;
+  --pink-dark: #D4849A;
+  --brown: #6B4C4C;
+  --brown-light: #8C6B6B;
+  --white: #FFFFFF;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: -apple-system, "PingFang SC", sans-serif;
+  background: var(--cream);
+  color: var(--brown);
+  line-height: 1.9;
+  overflow-x: hidden;
+  min-height: 100vh;
+  padding: 60px 24px 80px;
+}
+
+h1, h2, .handwritten {
+  font-family: 'OanaSoulHand', cursive;
+}
+
+.container {
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.back {
+  display: inline-block;
+  text-decoration: none;
+  color: var(--pink-mid);
+  font-size: 14px;
+  margin-bottom: 32px;
+  transition: color 0.2s;
+}
+.back:hover { color: var(--pink-dark); }
+
+.page-title {
+  font-family: 'OanaSoulHand', cursive;
+  font-size: clamp(28px, 5vw, 40px);
+  color: var(--pink-dark);
+  margin-bottom: 8px;
+}
+
+.page-subtitle {
+  font-size: 14px;
+  color: var(--brown-light);
+  margin-bottom: 36px;
+}
+
+/* Product grid */
+.products {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.product-card {
+  background: var(--white);
+  border-radius: 12px 8px 14px 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(107, 76, 76, 0.06);
+  transition: transform 0.2s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-3px) rotate(-1deg);
+}
+
+.product-card img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.product-card .caption {
+  padding: 12px 14px;
+  font-size: 13px;
+  color: var(--brown-light);
+}
+
+/* Coming soon */
+.coming-soon {
+  text-align: center;
+  padding: 32px 0;
+  color: var(--pink-mid);
+  font-size: 14px;
+}
+
+.coming-soon .handwritten {
+  font-size: 22px;
+  color: var(--pink-dark);
+  margin-bottom: 8px;
+}
+
+@media (max-width: 400px) {
+  .products { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <a href="./index.html#nav" class="back">← back to room</a>
+
+  <h1 class="page-title">Journal</h1>
+  <p class="page-subtitle">我有一个自己的手帐品牌@oana的小本子。目前只做了这些产品，新东西在路上了……要加油。</p>
+
+  <div class="products">
+    <div class="product-card">
+      <img src="./journal-1.jpg" alt="play together 本子">
+      <div class="caption">play together! A6盖章本</div>
+    </div>
+    <div class="product-card">
+      <div style="display: flex; gap: 4px;">
+        <img src="./journal-2.jpg" alt="The Same Day 贴纸" style="width: 50%;">
+        <img src="./journal-3.jpg" alt="The Same Day 贴纸·无背板" style="width: 50%;">
+      </div>
+      <div class="caption">The Same Day 透明贴纸</div>
+    </div>
+    <div class="product-card">
+      <img src="./journal-4.jpg" alt="便签纸系列">
+      <div class="caption">方形便签纸系列</div>
+    </div>
+  </div>
+
+  <div class="coming-soon">
+    <p class="handwritten">to be continued...</p>
+    <p>会努力做新东西出来的！(ง •̀ω•́)ง✧</p>
+  </div>
+</div>
+
+</body>
+</html>

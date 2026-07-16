@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Live Painting — Oana's Room</title>
+<style>
+@font-face {
+  font-family: 'OanaSoulHand';
+  src: url('./OanaSoulHand-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+:root {
+  --cream: #FFF9F5;
+  --pink-light: #FFF0F0;
+  --pink: #FFDDE4;
+  --pink-mid: #F5B8C4;
+  --pink-dark: #D4849A;
+  --brown: #6B4C4C;
+  --brown-light: #8C6B6B;
+  --white: #FFFFFF;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: -apple-system, "PingFang SC", sans-serif;
+  background: var(--cream);
+  color: var(--brown);
+  line-height: 1.9;
+  overflow-x: hidden;
+  min-height: 100vh;
+  padding: 60px 24px 80px;
+}
+
+h1, h2, .handwritten {
+  font-family: -apple-system, "PingFang SC", sans-serif;
+}
+
+.container {
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.back {
+  display: inline-block;
+  text-decoration: none;
+  color: var(--pink-mid);
+  font-size: 14px;
+  margin-bottom: 32px;
+  transition: color 0.2s;
+}
+.back:hover { color: var(--pink-dark); }
+
+.page-title {
+  font-family: 'OanaSoulHand', cursive;
+  font-size: clamp(28px, 5vw, 40px);
+  color: var(--pink-dark);
+  margin-bottom: 8px;
+}
+
+.intro {
+  font-size: 15px;
+  color: var(--brown-light);
+  margin-bottom: 32px;
+}
+
+/* Price burst */
+.price-box {
+  display: inline-block;
+  position: relative;
+  padding: 18px 28px;
+  margin-bottom: 28px;
+  text-align: center;
+  background: var(--pink-light);
+  clip-path: polygon(
+    50% 0%, 61% 8%, 75% 3%, 72% 18%, 88% 20%, 80% 33%,
+    95% 40%, 85% 52%, 97% 62%, 82% 68%, 88% 82%, 73% 78%,
+    68% 95%, 55% 85%, 45% 98%, 38% 84%, 25% 92%, 28% 77%,
+    12% 75%, 18% 62%, 3% 55%, 15% 45%, 5% 35%, 18% 28%,
+    10% 18%, 25% 17%, 30% 3%, 40% 12%
+  );
+}
+
+.price-box .price {
+  font-family: 'OanaSoulHand', cursive;
+  font-size: 22px;
+  color: var(--pink-dark);
+  margin-bottom: 2px;
+}
+
+.price-box .unit {
+  font-size: 11px;
+  color: var(--pink-mid);
+}
+
+/* Two column layout */
+.two-col {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  margin-bottom: 36px;
+}
+
+.two-col .scenes {
+  flex: 1;
+}
+
+.two-col .book-section {
+  margin-top: 0;
+}
+
+@media (max-width: 520px) {
+  .two-col {
+    flex-direction: column;
+    gap: 24px;
+  }
+}
+
+/* Scenes */
+.scenes {
+  margin-bottom: 0;
+}
+
+.scenes h2 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--pink-dark);
+  margin-bottom: 12px;
+}
+
+.scene-list {
+  list-style: none;
+  padding: 0;
+}
+
+.scene-list li {
+  font-size: 14px;
+  color: var(--brown-light);
+  padding: 8px 0;
+  border-bottom: 1px dashed var(--pink-light);
+}
+
+.scene-list li:last-child { border-bottom: none; }
+.scene-list li strong { color: var(--brown); }
+
+/* Book album */
+.book-section {
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+}
+
+.book-cover {
+  width: 160px;
+  height: 200px;
+  background: linear-gradient(145deg, #FFE8EC, #FFDDE4);
+  border-radius: 6px 16px 16px 6px;
+  box-shadow: 
+    -3px 0 0 0 #F5B8C4,
+    -5px 0 0 0 #EAAAB8,
+    -7px 0 0 0 #DF9CAA,
+    4px 6px 18px rgba(107, 76, 76, 0.2);
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.book-cover:hover {
+  transform: scale(1.05) rotate(-2deg);
+  box-shadow: 
+    -3px 0 0 0 #F5B8C4,
+    -5px 0 0 0 #EAAAB8,
+    -7px 0 0 0 #DF9CAA,
+    6px 10px 28px rgba(107, 76, 76, 0.25);
+}
+
+.book-cover .book-deco {
+  font-size: 28px;
+  letter-spacing: 4px;
+}
+
+.book-cover .book-subtitle {
+  font-family: 'OanaSoulHand', cursive;
+  font-size: 14px;
+  color: var(--pink-dark);
+  opacity: 0.8;
+}
+
+/* Spine detail */
+.book-cover::before {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 16px;
+  bottom: 16px;
+  width: 1.5px;
+  background: rgba(212, 132, 154, 0.3);
+  border-radius: 1px;
+}
+
+/* Little decorative dots */
+.book-cover::after {
+  content: '· · ·';
+  position: absolute;
+  bottom: 16px;
+  font-size: 14px;
+  color: var(--pink-mid);
+  letter-spacing: 4px;
+  opacity: 0.5;
+}
+
+/* Flipbook overlay */
+.flipbook-overlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(50, 30, 30, 0.6);
+  backdrop-filter: blur(8px);
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.flipbook-overlay.show {
+  display: flex;
+}
+
+.flipbook {
+  perspective: 1200px;
+  width: min(80vw, 360px);
+  aspect-ratio: 3/4;
+  position: relative;
+}
+
+.flip-page {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 4px 8px 8px 4px;
+  overflow: hidden;
+  backface-visibility: hidden;
+  transition: transform 0.6s ease;
+  transform-origin: left center;
+  transform-style: preserve-3d;
+  box-shadow: 2px 2px 12px rgba(0,0,0,0.15);
+}
+
+.flip-page img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.flip-page.flipped {
+  transform: rotateY(-180deg);
+}
+
+.flipbook-hint {
+  font-size: 13px;
+  color: rgba(255,255,255,0.7);
+}
+
+.flipbook-close {
+  font-size: 14px;
+  color: rgba(255,255,255,0.8);
+  cursor: pointer;
+  background: none;
+  border: none;
+  margin-top: 8px;
+}
+
+.flipbook-close:hover { color: white; }
+
+.cal-section-title {
+  font-family: 'OanaSoulHand', cursive;
+  font-size: 18px;
+  color: var(--pink-dark);
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+/* Calendar */
+.calendar-section {
+  margin-top: 36px;
+  background: var(--white);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 2px 12px rgba(107, 76, 76, 0.06);
+}
+
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.cal-title {
+  font-family: 'OanaSoulHand', cursive;
+  font-size: 18px;
+  color: var(--pink-dark);
+}
+
+.cal-arrow {
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: var(--pink-mid);
+  cursor: pointer;
+  padding: 4px 12px;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.cal-arrow:hover {
+  background: var(--pink-light);
+  color: var(--pink-dark);
+}
+
+.calendar-grid, .calendar-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  text-align: center;
+}
+
+.cal-weekday {
+  font-size: 11px;
+  color: var(--pink-mid);
+  padding: 4px 0;
+  font-weight: 500;
+}
+
+.calendar-days {
+  margin-top: 4px;
+}
+
+.cal-day {
+  font-size: 13px;
+  padding: 8px 0;
+  border-radius: 8px;
+  color: var(--brown-light);
+  transition: all 0.15s;
+}
+
+.cal-day.today {
+  font-weight: 600;
+  color: var(--brown);
+}
+
+.cal-day.booked {
+  background: var(--pink);
+  color: var(--pink-dark);
+  font-weight: 600;
+}
+
+.cal-day.empty {
+  color: transparent;
+}
+
+.cal-legend {
+  margin-top: 12px;
+  font-size: 11px;
+  color: var(--brown-light);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: center;
+}
+
+.legend-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 4px;
+}
+
+.legend-dot.booked { background: var(--pink); }
+.legend-dot.available { background: var(--pink-light); border: 1px solid var(--pink-mid); }
+
+/* Contact */
+.contact-line {
+  margin-top: 24px;
+  text-align: center;
+  font-size: 14px;
+  color: var(--brown-light);
+}
+
+.contact-line .cta {
+  font-size: 16px;
+  color: var(--pink-dark);
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <a href="./index.html#nav" class="back">← back to room</a>
+
+  <h1 class="page-title">Live Painting ✦</h1>
+  <p class="intro">
+    我可以带着画笔去你的现场。<br>
+    团建活动、婚礼宴会、商场快闪、节日市集——<br>
+    十分钟收获一幅有趣小画。
+  </p>
+
+  <div class="price-box">
+    <div class="price">1.5k / 6h</div>
+    <div class="unit">一场活动的报价</div>
+  </div>
+
+  <div class="two-col">
+    <div class="scenes">
+      <h2>适合场景 ♡</h2>
+      <ul class="scene-list">
+        <li><strong>公司团建</strong> — 给每位同事画一幅肖像当纪念</li>
+        <li><strong>婚礼宾客</strong> — 签到处的特别环节</li>
+        <li><strong>商场节日</strong> — 快闪摊位 / 圣诞市集 / 周年庆</li>
+        <li><strong>品牌活动</strong> — 现场定制品牌联名小画</li>
+      </ul>
+    </div>
+
+    <div class="book-section">
+      <div class="book-cover" onclick="openFlipbook()">
+        <div class="book-deco">✿ ✿ ✿</div>
+        <div class="book-subtitle">open me</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Calendar -->
+  <div class="calendar-section">
+    <div class="cal-section-title">查看档期 ↓</div>
+    <div class="calendar-header">
+      <button class="cal-arrow" onclick="prevMonth()">‹</button>
+      <span class="cal-title" id="calTitle"></span>
+      <button class="cal-arrow" onclick="nextMonth()">›</button>
+    </div>
+    <div class="calendar-grid">
+      <div class="cal-weekday">Mon</div>
+      <div class="cal-weekday">Tue</div>
+      <div class="cal-weekday">Wed</div>
+      <div class="cal-weekday">Thu</div>
+      <div class="cal-weekday">Fri</div>
+      <div class="cal-weekday">Sat</div>
+      <div class="cal-weekday">Sun</div>
+    </div>
+    <div class="calendar-days" id="calDays"></div>
+    <div class="cal-legend">
+      <span class="legend-dot booked"></span> 已约
+      <span style="margin-left: 4px;">空白可约</span>
+    </div>
+  </div>
+
+  <div class="contact-line">
+    <p>🌍Fafa1103_</p>
+  </div>
+</div>
+
+<!-- Flipbook overlay -->
+<div class="flipbook-overlay" id="flipOverlay">
+  <div class="flipbook" id="flipbook">
+    <div class="flip-page" style="z-index:10"><img src="./collab-1.jpg" alt=""></div>
+    <div class="flip-page" style="z-index:9"><img src="./collab-2.jpg" alt=""></div>
+    <div class="flip-page" style="z-index:8"><img src="./collab-3.jpg" alt=""></div>
+    <div class="flip-page" style="z-index:7"><img src="./collab-4.jpg" alt=""></div>
+    <div class="flip-page" style="z-index:6"><img src="./collab-5.jpg" alt=""></div>
+    <div class="flip-page" style="z-index:5"><img src="./collab-6.jpg" alt=""></div>
+    <div class="flip-page" style="z-index:4"><img src="./collab-7.jpg" alt=""></div>
+    <div class="flip-page" style="z-index:3"><img src="./collab-8.jpg" alt=""></div>
+    <div class="flip-page" style="z-index:2"><img src="./collab-9.jpg" alt=""></div>
+    <div class="flip-page" style="z-index:1"><img src="./collab-10.jpg" alt=""></div>
+  </div>
+  <p class="flipbook-hint">点击翻页 →</p>
+  <button class="flipbook-close" onclick="closeFlipbook()">✕ 合上</button>
+</div>
+
+<script>
+// === Calendar ===
+const bookedDates = [
+  '2026-07-19', '2026-07-20',  // 这周末
+  '2026-09-12',
+  '2026-09-27'
+];
+
+let calYear = 2026;
+let calMonth = 6; // 0-indexed, 6 = July
+
+function renderCalendar() {
+  const title = document.getElementById('calTitle');
+  const daysEl = document.getElementById('calDays');
+  
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  title.textContent = `${months[calMonth]} ${calYear}`;
+  
+  const firstDay = new Date(calYear, calMonth, 1);
+  let startDay = firstDay.getDay() - 1; // Mon=0
+  if (startDay < 0) startDay = 6;
+  
+  const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+  const today = new Date();
+  
+  let html = '';
+  
+  // Empty cells before first day
+  for (let i = 0; i < startDay; i++) {
+    html += '<div class="cal-day empty">.</div>';
+  }
+  
+  for (let d = 1; d <= daysInMonth; d++) {
+    const dateStr = `${calYear}-${String(calMonth + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+    const isBooked = bookedDates.includes(dateStr);
+    const isToday = today.getFullYear() === calYear && today.getMonth() === calMonth && today.getDate() === d;
+    
+    let cls = 'cal-day';
+    if (isBooked) cls += ' booked';
+    if (isToday) cls += ' today';
+    
+    html += `<div class="${cls}">${d}</div>`;
+  }
+  
+  daysEl.innerHTML = html;
+}
+
+function prevMonth() {
+  calMonth--;
+  if (calMonth < 0) { calMonth = 11; calYear--; }
+  renderCalendar();
+}
+
+function nextMonth() {
+  calMonth++;
+  if (calMonth > 11) { calMonth = 0; calYear++; }
+  renderCalendar();
+}
+
+renderCalendar();
+
+// === Flipbook ===
+const pages = document.querySelectorAll('.flip-page');
+let currentPage = 0;
+
+function openFlipbook() {
+  document.getElementById('flipOverlay').classList.add('show');
+  // Reset all pages
+  pages.forEach((p, i) => {
+    p.classList.remove('flipped');
+    p.style.zIndex = pages.length - i;
+  });
+  currentPage = 0;
+}
+
+function closeFlipbook() {
+  document.getElementById('flipOverlay').classList.remove('show');
+}
+
+// Click on flipbook area to turn page
+document.getElementById('flipbook').addEventListener('click', () => {
+  if (currentPage < pages.length) {
+    pages[currentPage].classList.add('flipped');
+    currentPage++;
+  }
+  if (currentPage >= pages.length) {
+    // All pages flipped, reset after a short delay
+    setTimeout(() => {
+      pages.forEach((p, i) => {
+        p.classList.remove('flipped');
+        p.style.zIndex = pages.length - i;
+      });
+      currentPage = 0;
+    }, 800);
+  }
+});
+
+// Close on overlay background click
+document.getElementById('flipOverlay').addEventListener('click', (e) => {
+  if (e.target === document.getElementById('flipOverlay')) closeFlipbook();
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Oana</title>
+<style>
+@font-face {
+  font-family: 'OanaSoulHand';
+  src: url('./OanaSoulHand-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+:root {
+  --cream: #FFF9F5;
+  --pink-light: #FFF0F0;
+  --pink: #FFDDE4;
+  --pink-mid: #F5B8C4;
+  --pink-dark: #D4849A;
+  --brown: #6B4C4C;
+  --brown-light: #8C6B6B;
+  --white: #FFFFFF;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: -apple-system, "PingFang SC", sans-serif;
+  background: var(--cream);
+  color: var(--brown);
+  line-height: 1.8;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, .handwritten {
+  font-family: 'OanaSoulHand', cursive;
+}
+
+/* ===== COVER PAGE ===== */
+.cover {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 24px;
+  position: relative;
+}
+
+.cover-illustration {
+  width: clamp(360px, 70vw, 560px);
+  height: auto;
+  margin-bottom: 8px;
+}
+
+.cover-illustration img {
+  width: 100%;
+  height: auto;
+}
+
+.cover h1 {
+  font-size: clamp(36px, 7vw, 56px);
+  color: var(--pink-dark);
+  letter-spacing: 2px;
+  margin-top: -12px;
+  margin-bottom: 12px;
+}
+
+.cover .tagline {
+  font-size: 15px;
+  color: var(--brown-light);
+  max-width: 360px;
+  margin: 0 auto 48px;
+}
+
+.click-hint {
+  color: var(--pink-mid);
+  font-size: 13px;
+  margin-top: 24px;
+  opacity: 0.7;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 0.4; }
+}
+
+/* Welcome flash */
+.welcome-text {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'OanaSoulHand', cursive;
+  font-size: clamp(48px, 10vw, 80px);
+  color: #F2A6B3;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+.welcome-text.show {
+  animation: welcomePop 1.2s ease-out forwards;
+}
+
+@keyframes welcomePop {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+  30% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
+  50% { transform: translate(-50%, -50%) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(1); }
+}
+
+/* Confetti */
+.confetti-canvas {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  pointer-events: none;
+  z-index: 999;
+}
+
+/* Content hidden by default */
+.content {
+  display: none;
+}
+
+.content.visible {
+  display: flex;
+  animation: fadeIn 0.6s ease;
+}
+
+/* Nav page */
+.nav-page {
+  min-height: 100vh;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px;
+  position: relative;
+}
+
+.nav-back {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  text-decoration: none;
+  color: var(--pink-mid);
+  font-size: 20px;
+  transition: color 0.2s;
+}
+
+.nav-back:hover {
+  color: var(--pink-dark);
+}
+
+.nav-grid {
+  display: flex;
+  gap: 32px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  transition: transform 0.2s ease;
+}
+
+.nav-item:hover {
+  cursor: pointer;
+}
+
+.nav-item {
+  position: relative;
+}
+
+.nav-item::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  width: 14px;
+  height: 40px;
+  border-radius: 2px;
+  opacity: 0.85;
+  z-index: 2;
+}
+
+.nav-item:nth-child(1)::before { background: #FFD1DC; left: 30%; transform: rotate(-4deg); }
+.nav-item:nth-child(2)::before { background: #B5EAD7; left: 60%; transform: rotate(3deg); }
+.nav-item:nth-child(3)::before { background: #C7CEEA; left: 35%; transform: rotate(-2deg); }
+.nav-item:nth-child(4)::before { background: #FFDAC1; left: 55%; transform: rotate(5deg); }
+.nav-item:nth-child(5)::before { background: #E2F0CB; left: 40%; transform: rotate(-3deg); }
+.nav-item:nth-child(6)::before { background: #FCE4EC; left: 50%; transform: rotate(2deg); }
+
+.nav-item img {
+  width: clamp(140px, 22vw, 200px);
+  height: auto;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.nav-item:nth-child(1) { transform: rotate(-5deg); animation: sway1 3s ease-in-out infinite; }
+.nav-item:nth-child(2) { transform: rotate(3deg) translateY(10px); animation: sway2 3.5s ease-in-out infinite; }
+.nav-item:nth-child(3) { transform: rotate(-2deg) translateY(-6px); animation: sway3 2.8s ease-in-out infinite; }
+.nav-item:nth-child(4) { transform: rotate(4deg) translateY(8px); animation: sway1 3.2s ease-in-out infinite; }
+.nav-item:nth-child(5) { transform: rotate(-3deg) translateY(-4px); animation: sway2 3.4s ease-in-out infinite; }
+.nav-item:nth-child(6) { transform: rotate(2deg) translateY(6px); animation: sway3 3.1s ease-in-out infinite; }
+
+@keyframes sway1 {
+  0%, 100% { transform: rotate(-5deg) translateY(0); }
+  50% { transform: rotate(-4deg) translateY(-3px); }
+}
+@keyframes sway2 {
+  0%, 100% { transform: rotate(3deg) translateY(10px); }
+  50% { transform: rotate(4deg) translateY(7px); }
+}
+@keyframes sway3 {
+  0%, 100% { transform: rotate(-2deg) translateY(-6px); }
+  50% { transform: rotate(-1deg) translateY(-9px); }
+}
+
+.nav-item:nth-child(1):hover { transform: rotate(-5deg) translateY(-4px) scale(1.05); }
+.nav-item:nth-child(2):hover { transform: rotate(3deg) translateY(6px) scale(1.05); }
+.nav-item:nth-child(3):hover { transform: rotate(-2deg) translateY(-10px) scale(1.05); }
+.nav-item:nth-child(4):hover { transform: rotate(4deg) translateY(4px) scale(1.05); }
+.nav-item:nth-child(5):hover { transform: rotate(-3deg) translateY(-8px) scale(1.05); }
+.nav-item:nth-child(6):hover { transform: rotate(2deg) translateY(2px) scale(1.05); }
+
+.nav-item span {
+  font-family: 'OanaSoulHand', cursive;
+  font-size: 18px;
+  color: var(--pink-dark);
+}
+
+/* Social links */
+.social-links {
+  width: 100%;
+  margin-top: 96px;
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  align-items: center;
+}
+
+.social-item {
+  font-size: 12px;
+  color: var(--brown-light);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.social-item:hover {
+  color: var(--pink-dark);
+}
+
+.social-divider {
+  color: var(--pink-mid);
+  font-size: 10px;
+}
+
+/* Annotation labels */
+.nav-item .note {
+  font-size: 11px;
+  color: var(--brown-light);
+  opacity: 0.75;
+  margin-top: -2px;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.cover.hidden {
+  display: none;
+}
+
+/* ===== CONTENT SECTIONS ===== */
+.content {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
+}
+
+section {
+  padding: 48px 0;
+}
+
+.section-card {
+  background: var(--white);
+  border-radius: 16px 12px 18px 10px;
+  padding: 32px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 12px rgba(107, 76, 76, 0.06);
+  position: relative;
+}
+
+.section-card::before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: 20px;
+  width: 40px;
+  height: 8px;
+  background: var(--pink);
+  border-radius: 4px;
+  transform: rotate(-2deg);
+}
+
+.section-card h2 {
+  font-size: clamp(24px, 4vw, 36px);
+  color: var(--pink-dark);
+  margin-bottom: 16px;
+}
+
+.section-card p {
+  color: var(--brown-light);
+  font-size: 15px;
+}
+
+/* Tags */
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.tag {
+  display: inline-block;
+  padding: 6px 14px;
+  background: var(--pink-light);
+  border-radius: 20px;
+  font-size: 13px;
+  color: var(--pink-dark);
+  font-weight: 500;
+}
+
+/* Gallery grid */
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.gallery-item {
+  aspect-ratio: 1;
+  background: var(--pink-light);
+  border-radius: 12px 8px 14px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  transition: transform 0.2s ease;
+}
+
+.gallery-item:hover {
+  transform: rotate(-2deg) scale(1.03);
+}
+
+/* Contact */
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.contact-item {
+  padding: 16px;
+  background: var(--pink-light);
+  border-radius: 10px 14px 8px 12px;
+  text-align: center;
+  font-size: 14px;
+  color: var(--brown);
+  transition: transform 0.2s ease;
+}
+
+.contact-item:hover {
+  transform: translateY(-2px);
+}
+
+.contact-item .icon {
+  font-size: 24px;
+  margin-bottom: 8px;
+}
+
+/* Divider */
+.divider {
+  text-align: center;
+  padding: 8px 0;
+  color: var(--pink-mid);
+  font-size: 20px;
+  letter-spacing: 8px;
+  opacity: 0.6;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 40px 24px;
+  color: var(--pink-mid);
+  font-size: 13px;
+}
+
+footer .handwritten {
+  font-size: 20px;
+  color: var(--pink-dark);
+  margin-bottom: 8px;
+}
+
+/* Responsive */
+@media (max-width: 520px) {
+  .section-card { padding: 24px 20px; }
+  .gallery { grid-template-columns: repeat(3, 1fr); }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== COVER ===== -->
+<div class="cover">
+  <div class="cover-illustration">
+    <img src="./oana-avatar.gif" alt="Oana">
+  </div>
+  <h1>Oana's Room</h1>
+  <p class="click-hint">— click anywhere to enter —</p>
+</div>
+
+<!-- ===== NAV PAGE (after welcome) ===== -->
+<div class="content nav-page" id="nav">
+  <a href="./index.html" class="nav-back" onclick="goBack(event)">←</a>
+  <div class="nav-grid">
+    <a class="nav-item" href="./job.html">
+      <img src="./icon-work.jpg" alt="Job">
+      <span>Job</span>
+      <span class="note">「我为谁打工」</span>
+    </a>
+    <a class="nav-item" href="./painting.html">
+      <img src="./icon-painting.jpg" alt="Painting">
+      <span>Painting</span>
+      <span class="note">「约稿在这儿」</span>
+    </a>
+    <a class="nav-item" href="./journal.html">
+      <img src="./icon-journal.jpg" alt="Journal">
+      <span>Journal</span>
+      <span class="note">「手帐ip」</span>
+    </a>
+    <a class="nav-item" href="./collab.html">
+      <img src="./icon-collab.jpg" alt="Collab">
+      <span>Collab</span>
+      <span class="note">「找我合作」</span>
+    </a>
+    <a class="nav-item" href="./life.html">
+      <img src="./icon-life.jpg" alt="About Me">
+      <span>About Me</span>
+      <span class="note">「Cola眼中的我」</span>
+    </a>
+    <a class="nav-item" href="./guestbook.html">
+      <img src="./icon-guestbook.jpg" alt="Guestbook">
+      <span>Guestbook</span>
+      <span class="note">「给我留言」</span>
+    </a>
+  </div>
+  <div class="social-links">
+    <a href="https://xhslink.com/m/4ASMHOwFm9r" target="_blank" class="social-item">小红书</a>
+    <span class="social-divider">·</span>
+    <a href="https://x.com/oana_mmm" target="_blank" class="social-item">𝕏</a>
+  </div>
+</div>
+
+<div class="welcome-text" id="welcomeText">welcome ♡</div>
+<canvas class="confetti-canvas" id="confetti"></canvas>
+
+<script>
+const cover = document.querySelector('.cover');
+const content = document.querySelector('.content');
+const welcomeText = document.getElementById('welcomeText');
+let entered = false;
+
+// If returning from a sub-page, skip cover and show nav directly
+if (window.location.hash === '#nav') {
+  cover.classList.add('hidden');
+  content.classList.add('visible');
+  entered = true;
+}
+
+function goBack(e) {
+  e.preventDefault();
+  // Go back to cover
+  cover.classList.remove('hidden');
+  content.classList.remove('visible');
+  entered = false;
+  window.location.hash = '';
+}
+
+cover.addEventListener('click', () => {
+  if (entered) return;
+  entered = true;
+
+  // Hide cover first
+  cover.classList.add('hidden');
+
+  // Random welcome message
+  const greetings = ['welcome ♡', 'make yourself at home', 'hi there ✿', 'come on in ♡', 'hey hey ✦', 'nice to see you ♡'];
+  welcomeText.textContent = greetings[Math.floor(Math.random() * greetings.length)];
+  welcomeText.classList.add('show');
+  launchConfetti();
+
+  // After animation, show nav page
+  setTimeout(() => {
+    content.classList.add('visible');
+  }, 1400);
+});
+
+function launchConfetti() {
+  const canvas = document.getElementById('confetti');
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  const colors = ['#FFDDE4', '#F2A6B3', '#FFB3C6', '#FFC8A2', '#B5EAD7', '#C7CEEA', '#FFDAC1', '#FFE4E1'];
+  const pieces = [];
+
+  for (let i = 0; i < 120; i++) {
+    pieces.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height - canvas.height,
+      w: Math.random() * 8 + 4,
+      h: Math.random() * 6 + 3,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      vy: Math.random() * 3 + 2,
+      vx: Math.random() * 2 - 1,
+      rotation: Math.random() * 360,
+      rotationSpeed: Math.random() * 6 - 3,
+    });
+  }
+
+  let frame = 0;
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    pieces.forEach(p => {
+      p.y += p.vy;
+      p.x += p.vx;
+      p.rotation += p.rotationSpeed;
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.rotation * Math.PI / 180);
+      ctx.fillStyle = p.color;
+      ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+      ctx.restore();
+    });
+    frame++;
+    if (frame < 150) requestAnimationFrame(animate);
+    else ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+  animate();
+}
+</script>
+
+</body>
+</html>

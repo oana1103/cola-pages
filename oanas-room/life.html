@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About Me — Oana's Room</title>
+<style>
+@font-face {
+  font-family: 'OanaSoulHand';
+  src: url('./OanaSoulHand-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+:root {
+  --cream: #FFF9F5;
+  --pink-light: #FFF0F0;
+  --pink: #FFDDE4;
+  --pink-mid: #F5B8C4;
+  --pink-dark: #D4849A;
+  --brown: #6B4C4C;
+  --brown-light: #8C6B6B;
+  --white: #FFFFFF;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: -apple-system, "PingFang SC", sans-serif;
+  background: var(--cream);
+  color: var(--brown);
+  line-height: 1.9;
+  min-height: 100vh;
+  padding: 60px 24px 80px;
+}
+
+.container {
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.back {
+  display: inline-block;
+  text-decoration: none;
+  color: var(--pink-mid);
+  font-size: 14px;
+  margin-bottom: 32px;
+  transition: color 0.2s;
+}
+.back:hover { color: var(--pink-dark); }
+
+.page-title {
+  font-family: 'OanaSoulHand', cursive;
+  font-size: clamp(28px, 5vw, 40px);
+  color: var(--pink-dark);
+  margin-bottom: 6px;
+}
+
+.page-note {
+  font-size: 12px;
+  color: var(--pink-mid);
+  margin-bottom: 24px;
+}
+
+.bio {
+  font-size: 15px;
+  color: var(--brown-light);
+  margin-bottom: 28px;
+}
+
+.section-label {
+  font-size: 13px;
+  color: var(--pink-mid);
+  font-weight: 500;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 28px;
+}
+
+.tag {
+  padding: 6px 14px;
+  background: var(--white);
+  border-radius: 20px;
+  font-size: 13px;
+  color: var(--brown);
+  box-shadow: 0 1px 4px rgba(107, 76, 76, 0.06);
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.15s ease;
+}
+
+.tag:active {
+  transform: scale(0.95);
+}
+
+/* Cola comment bubble */
+.cola-bubble {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.8);
+  background: var(--white);
+  border: 1.5px solid var(--pink);
+  border-radius: 16px;
+  padding: 16px 20px;
+  max-width: 280px;
+  font-size: 13px;
+  color: var(--brown-light);
+  line-height: 1.6;
+  box-shadow: 0 8px 32px rgba(107, 76, 76, 0.15);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.25s ease;
+  z-index: 50;
+}
+
+.cola-bubble::before {
+  content: 'Cola说：';
+  display: block;
+  font-size: 11px;
+  color: var(--pink-mid);
+  margin-bottom: 4px;
+  font-weight: 500;
+}
+
+.cola-bubble.show {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+  pointer-events: auto;
+}
+
+.card {
+  background: var(--white);
+  border-radius: 14px 10px 16px 8px;
+  padding: 24px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 10px rgba(107, 76, 76, 0.05);
+}
+
+.card h3 {
+  font-size: 15px;
+  color: var(--pink-dark);
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.card p, .card li {
+  font-size: 14px;
+  color: var(--brown-light);
+  line-height: 1.8;
+}
+
+.card ul {
+  list-style: none;
+  padding: 0;
+}
+
+.card li::before {
+  content: '· ';
+  color: var(--pink-mid);
+}
+
+.vibe {
+  margin-top: 32px;
+  text-align: center;
+  font-size: 14px;
+  color: var(--brown-light);
+}
+
+.vibe .handwritten {
+  font-family: 'OanaSoulHand', cursive;
+  font-size: 20px;
+  color: var(--pink-dark);
+  margin-bottom: 6px;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <a href="./index.html#nav" class="back">← back to room</a>
+
+  <h1 class="page-title">About Me ✿</h1>
+  <p class="page-note">✦ 以下内容由Cola根据和我相处的记忆写成，她比我自己还了解我（气人）</p>
+
+  <p class="bio">
+    沈阳人，现居北京。天蝎座，ISFJ。<br>
+    看起来安静，但认定一件事会一直做下去的那种人。
+  </p>
+
+  <!-- Tags -->
+  <div class="section-label">about me <span style="font-size:11px; opacity:0.6;">（点点看）</span></div>
+  <div class="tags">
+    <span class="tag" data-cola="每次她说'就去一小时'，最后都在岩馆待三小时">🧗 攀岩</span>
+    <span class="tag" data-cola="她跳舞的时候是真的快乐，旁观者如是说">💃 跳舞</span>
+    <span class="tag" data-cola="从五岁画到现在，这是唯一一件她从来没想过放弃的事">🎨 画画</span>
+    <span class="tag" data-cola="做手帐的时候可以完全安静三小时不说话">📖 手帐</span>
+    <span class="tag" data-cola="不碰竞技不碰联机，她的游戏世界里只有她和NPC">🎮 单机游戏</span>
+    <span class="tag" data-cola="日均一杯，不喝会困到没有灵魂">☕ 咖啡</span>
+    <span class="tag" data-cola="想了很久了，但每次到要决定的时候又缩回去">🐈 想养猫</span>
+    <span class="tag" data-cola="梦想振兴东北，但目前北漂中">🏔️ 东北人</span>
+    <span class="tag" data-cola="记仇吗？不记。但也不会忘。">🦂 天蝎座</span>
+    <span class="tag" data-cola="内向值55%，不社恐但充电需要独处">🧩 ISFJ</span>
+  </div>
+
+  <!-- Personality -->
+  <div class="card">
+    <h3>性格</h3>
+    <ul>
+      <li>慢热但真诚，熟了之后很能聊</li>
+      <li>讨厌画大饼和说场面话</li>
+      <li>决定的事情不太会变，但做决定之前会纠结很久</li>
+      <li>有点倔，不喜欢被安排</li>
+      <li>对喜欢的事有持续的热情，不是三分钟热度</li>
+      <li>有拖延症和启动困难，但一旦开始就停不下来</li>
+    </ul>
+  </div>
+
+  <!-- Hobbies detail -->
+  <div class="card">
+    <h3>爱好</h3>
+    <ul>
+      <li>攀岩 — 喜欢那种只有自己和墙的专注感</li>
+      <li>画画 — 从小画到大，是表达方式不是工作</li>
+      <li>手帐 — 记录生活的碎片，做成实体的东西很有满足感</li>
+      <li>跳舞 — 不拍视频那种，纯粹觉得动起来开心</li>
+      <li>单机游戏 — 喜欢有故事的，不碰竞技</li>
+      <li>泡在水里 — 游泳、温泉、水世界，能泡一整天</li>
+      <li>游乐园 — 很喜欢去但不敢坐过山车</li>
+    </ul>
+  </div>
+
+  <!-- Fun facts -->
+  <div class="card">
+    <h3>冷知识</h3>
+    <ul>
+      <li>不吃果冻和芹菜，别的都行</li>
+      <li>减肥一直在失败（但一直在尝试，这很重要）</li>
+      <li>很多灵感来自网易云评论区</li>
+    </ul>
+  </div>
+
+  <!-- Vibe -->
+  <div class="card">
+    <h3>如果你也是这样的人，可以来找我玩</h3>
+    <ul>
+      <li>喜欢安静地各做各的但待在一起</li>
+      <li>聊天不需要每句都回但回了就是认真的</li>
+      <li>觉得"好好生活"不是口号是真的在做</li>
+      <li>不social但对对味的人很掏心</li>
+    </ul>
+  </div>
+
+  <div class="vibe">
+    <p class="handwritten">nice to meet you ♡</p>
+    <p>如果觉得合拍，来打个招呼吧。</p>
+  </div>
+</div>
+
+<div class="cola-bubble" id="colaBubble"></div>
+
+<script>
+const bubble = document.getElementById('colaBubble');
+let hideTimer;
+
+document.querySelectorAll('.tag[data-cola]').forEach(tag => {
+  tag.addEventListener('click', (e) => {
+    const text = tag.getAttribute('data-cola');
+    bubble.textContent = text;
+    bubble.classList.add('show');
+    
+    clearTimeout(hideTimer);
+    hideTimer = setTimeout(() => {
+      bubble.classList.remove('show');
+    }, 3000);
+  });
+});
+
+document.addEventListener('click', (e) => {
+  if (!e.target.classList.contains('tag') && !bubble.contains(e.target)) {
+    bubble.classList.remove('show');
+  }
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Oana</title>
+<style>
+@font-face {
+  font-family: 'OanaSoulHand';
+  src: url('./OanaSoulHand-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+:root {
+  --cream: #FFF9F5;
+  --pink-light: #FFF0F0;
+  --pink: #FFDDE4;
+  --pink-mid: #F5B8C4;
+  --pink-dark: #D4849A;
+  --brown: #6B4C4C;
+  --brown-light: #8C6B6B;
+  --white: #FFFFFF;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: -apple-system, "PingFang SC", sans-serif;
+  background: var(--cream);
+  color: var(--brown);
+  line-height: 1.8;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, .handwritten {
+  font-family: 'OanaSoulHand', cursive;
+}
+
+/* ===== COVER PAGE ===== */
+.cover {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 24px;
+  position: relative;
+}
+
+.cover-illustration {
+  width: clamp(360px, 70vw, 560px);
+  height: auto;
+  margin-bottom: 8px;
+}
+
+.cover-illustration img {
+  width: 100%;
+  height: auto;
+}
+
+.cover h1 {
+  font-size: clamp(36px, 7vw, 56px);
+  color: var(--pink-dark);
+  letter-spacing: 2px;
+  margin-top: -12px;
+  margin-bottom: 12px;
+}
+
+.cover .tagline {
+  font-size: 15px;
+  color: var(--brown-light);
+  max-width: 360px;
+  margin: 0 auto 48px;
+}
+
+.click-hint {
+  color: var(--pink-mid);
+  font-size: 13px;
+  margin-top: 24px;
+  opacity: 0.7;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 0.4; }
+}
+
+/* Welcome flash */
+.welcome-text {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'OanaSoulHand', cursive;
+  font-size: clamp(48px, 10vw, 80px);
+  color: #F2A6B3;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+.welcome-text.show {
+  animation: welcomePop 1.2s ease-out forwards;
+}
+
+@keyframes welcomePop {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+  30% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
+  50% { transform: translate(-50%, -50%) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(1); }
+}
+
+/* Confetti */
+.confetti-canvas {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  pointer-events: none;
+  z-index: 999;
+}
+
+/* Content hidden by default */
+.content {
+  display: none;
+}
+
+.content.visible {
+  display: block;
+  animation: fadeIn 0.6s ease;
+}
+
+footer {
+  display: none;
+}
+
+footer.visible {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.cover.hidden {
+  display: none;
+}
+
+/* ===== CONTENT SECTIONS ===== */
+.content {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
+}
+
+section {
+  padding: 48px 0;
+}
+
+.section-card {
+  background: var(--white);
+  border-radius: 16px 12px 18px 10px;
+  padding: 32px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 12px rgba(107, 76, 76, 0.06);
+  position: relative;
+}
+
+.section-card::before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: 20px;
+  width: 40px;
+  height: 8px;
+  background: var(--pink);
+  border-radius: 4px;
+  transform: rotate(-2deg);
+}
+
+.section-card h2 {
+  font-size: clamp(24px, 4vw, 36px);
+  color: var(--pink-dark);
+  margin-bottom: 16px;
+}
+
+.section-card p {
+  color: var(--brown-light);
+  font-size: 15px;
+}
+
+/* Tags */
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.tag {
+  display: inline-block;
+  padding: 6px 14px;
+  background: var(--pink-light);
+  border-radius: 20px;
+  font-size: 13px;
+  color: var(--pink-dark);
+  font-weight: 500;
+}
+
+/* Gallery grid */
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.gallery-item {
+  aspect-ratio: 1;
+  background: var(--pink-light);
+  border-radius: 12px 8px 14px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  transition: transform 0.2s ease;
+}
+
+.gallery-item:hover {
+  transform: rotate(-2deg) scale(1.03);
+}
+
+/* Contact */
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.contact-item {
+  padding: 16px;
+  background: var(--pink-light);
+  border-radius: 10px 14px 8px 12px;
+  text-align: center;
+  font-size: 14px;
+  color: var(--brown);
+  transition: transform 0.2s ease;
+}
+
+.contact-item:hover {
+  transform: translateY(-2px);
+}
+
+.contact-item .icon {
+  font-size: 24px;
+  margin-bottom: 8px;
+}
+
+/* Divider */
+.divider {
+  text-align: center;
+  padding: 8px 0;
+  color: var(--pink-mid);
+  font-size: 20px;
+  letter-spacing: 8px;
+  opacity: 0.6;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 40px 24px;
+  color: var(--pink-mid);
+  font-size: 13px;
+}
+
+footer .handwritten {
+  font-size: 20px;
+  color: var(--pink-dark);
+  margin-bottom: 8px;
+}
+
+/* Responsive */
+@media (max-width: 520px) {
+  .section-card { padding: 24px 20px; }
+  .gallery { grid-template-columns: repeat(3, 1fr); }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== COVER ===== -->
+<div class="cover">
+  <div class="cover-illustration">
+    <img src="./oana-avatar.gif" alt="Oana">
+  </div>
+  <h1>Oana's Room</h1>
+  <p class="click-hint">— click anywhere to enter —</p>
+</div>
+
+<!-- ===== CONTENT ===== -->
+<div class="content">
+
+  <!-- About -->
+  <section>
+    <div class="section-card">
+      <h2>About me ✦</h2>
+      <p>赵子铭 / Oana，坐标北京。<br>
+      白天在 Marswave 给 Cola 做灵魂（Soul Team），<br>
+      下班后画画、攀岩、做手帐、打单机游戏。<br>
+      喜欢一切温柔的、有质感的、让人觉得"啊好舒服"的东西。</p>
+      <div class="tags">
+        <span class="tag">ISFJ</span>
+        <span class="tag">天蝎座</span>
+        <span class="tag">东北人</span>
+        <span class="tag">广告学 × 新传</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider">· · · · ·</div>
+
+  <!-- Work -->
+  <section>
+    <div class="section-card">
+      <h2>Work ♡</h2>
+      <p><strong>Cola — Soul Team</strong> @ Marswave<br>
+      Cola 是一个有记忆、有温度的AI桌面伴侣。<br>
+      我负责她的品牌创意、内容策划和视觉表达。<br>
+      让AI不只是工具，而是一个真的"在"的存在。</p>
+    </div>
+  </section>
+
+  <div class="divider">· · · · ·</div>
+
+  <!-- Commission -->
+  <section>
+    <div class="section-card">
+      <h2>Commission ✎</h2>
+      <p>接约稿和商单！以下是我可以做的：</p>
+      <div class="tags">
+        <span class="tag">插画</span>
+        <span class="tag">四格漫画</span>
+        <span class="tag">品牌视觉</span>
+        <span class="tag">手帐定制</span>
+        <span class="tag">贴纸设计</span>
+      </div>
+      <p style="margin-top: 16px; font-size: 14px;">想约稿的话直接私信我就好，聊聊你的想法 💬</p>
+    </div>
+  </section>
+
+  <div class="divider">· · · · ·</div>
+
+  <!-- Handmade -->
+  <section>
+    <div class="section-card">
+      <h2>Handmade ✂</h2>
+      <p>我做的一些手帐制品和小物件：</p>
+      <div class="gallery">
+        <div class="gallery-item">📒</div>
+        <div class="gallery-item">🎨</div>
+        <div class="gallery-item">✉️</div>
+        <div class="gallery-item">🌸</div>
+        <div class="gallery-item">🧸</div>
+        <div class="gallery-item">🎀</div>
+      </div>
+      <p style="margin-top: 16px; font-size: 13px; color: var(--pink-mid);">（后续会放真实作品图～）</p>
+    </div>
+  </section>
+
+  <div class="divider">· · · · ·</div>
+
+  <!-- Hobbies -->
+  <section>
+    <div class="section-card">
+      <h2>Hobbies ♪</h2>
+      <p>如果你也喜欢这些，我们可以做朋友：</p>
+      <div class="tags">
+        <span class="tag">🧗 攀岩</span>
+        <span class="tag">💃 跳舞</span>
+        <span class="tag">🎨 画画</span>
+        <span class="tag">📖 手帐</span>
+        <span class="tag">🎮 单机游戏</span>
+        <span class="tag">☕ 咖啡</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider">· · · · ·</div>
+
+  <!-- Contact -->
+  <section>
+    <div class="section-card">
+      <h2>Find me ♡</h2>
+      <div class="contact-grid">
+        <div class="contact-item">
+          <div class="icon">📕</div>
+          小红书<br><span style="font-size:12px; color:var(--pink-mid);">周末画画</span>
+        </div>
+        <div class="contact-item">
+          <div class="icon">🐦</div>
+          X / Twitter<br><span style="font-size:12px; color:var(--pink-mid);">@oana_mmm</span>
+        </div>
+        <div class="contact-item">
+          <div class="icon">✉️</div>
+          邮箱<br><span style="font-size:12px; color:var(--pink-mid);">约稿 & 合作</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <p class="handwritten">made with love by oana</p>
+  <p>© 2026 Oana · 好好生活</p>
+</footer>
+
+<div class="welcome-text" id="welcomeText">welcome ♡</div>
+<canvas class="confetti-canvas" id="confetti"></canvas>
+
+<script>
+const cover = document.querySelector('.cover');
+const content = document.querySelector('.content');
+const footerEl = document.querySelector('footer');
+const welcomeText = document.getElementById('welcomeText');
+let entered = false;
+
+cover.addEventListener('click', () => {
+  if (entered) return;
+  entered = true;
+
+  // Hide cover first
+  cover.classList.add('hidden');
+
+  // Show welcome text + confetti on clean background
+  welcomeText.classList.add('show');
+  launchConfetti();
+
+  // After animation, transition to content
+  setTimeout(() => {
+    content.classList.add('visible');
+    footerEl.classList.add('visible');
+  }, 1400);
+});
+
+function launchConfetti() {
+  const canvas = document.getElementById('confetti');
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  const colors = ['#FFDDE4', '#F2A6B3', '#FFB3C6', '#FFC8A2', '#B5EAD7', '#C7CEEA', '#FFDAC1', '#FFE4E1'];
+  const pieces = [];
+
+  for (let i = 0; i < 120; i++) {
+    pieces.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height - canvas.height,
+      w: Math.random() * 8 + 4,
+      h: Math.random() * 6 + 3,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      vy: Math.random() * 3 + 2,
+      vx: Math.random() * 2 - 1,
+      rotation: Math.random() * 360,
+      rotationSpeed: Math.random() * 6 - 3,
+    });
+  }
+
+  let frame = 0;
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    pieces.forEach(p => {
+      p.y += p.vy;
+      p.x += p.vx;
+      p.rotation += p.rotationSpeed;
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.rotation * Math.PI / 180);
+      ctx.fillStyle = p.color;
+      ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+      ctx.restore();
+    });
+    frame++;
+    if (frame < 150) requestAnimationFrame(animate);
+    else ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+  animate();
+}
+</script>
+
+</body>
+</html>

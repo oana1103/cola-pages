@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painting — Oana's Room</title>
+<style>
+@font-face {
+  font-family: 'OanaSoulHand';
+  src: url('./OanaSoulHand-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+:root {
+  --cream: #FFF9F5;
+  --pink-light: #FFF0F0;
+  --pink: #FFDDE4;
+  --pink-mid: #F5B8C4;
+  --pink-dark: #D4849A;
+  --brown: #6B4C4C;
+  --brown-light: #8C6B6B;
+  --white: #FFFFFF;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: -apple-system, "PingFang SC", sans-serif;
+  background: var(--cream);
+  color: var(--brown);
+  min-height: 100vh;
+  padding: 60px 24px 80px;
+}
+
+.container {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.back {
+  display: inline-block;
+  text-decoration: none;
+  color: var(--pink-mid);
+  font-size: 14px;
+  margin-bottom: 32px;
+  transition: color 0.2s;
+}
+.back:hover { color: var(--pink-dark); }
+
+.page-title {
+  font-family: 'OanaSoulHand', cursive;
+  font-size: clamp(28px, 5vw, 36px);
+  color: var(--pink-dark);
+  margin-bottom: 28px;
+}
+
+/* Chat */
+.chat-box {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 40px;
+}
+
+.chat-bubble {
+  max-width: 80%;
+  padding: 12px 16px;
+  font-size: 14px;
+  line-height: 1.7;
+  animation: bubbleIn 0.3s ease forwards;
+  opacity: 0;
+}
+
+.chat-bubble:nth-child(1) { animation-delay: 0.2s; }
+.chat-bubble:nth-child(2) { animation-delay: 0.5s; }
+.chat-bubble:nth-child(3) { animation-delay: 0.9s; }
+.chat-bubble:nth-child(4) { animation-delay: 1.2s; }
+.chat-bubble:nth-child(5) { animation-delay: 1.6s; }
+.chat-bubble:nth-child(6) { animation-delay: 1.9s; }
+.chat-bubble:nth-child(7) { animation-delay: 2.3s; }
+.chat-bubble:nth-child(8) { animation-delay: 2.6s; }
+.chat-bubble:nth-child(9) { animation-delay: 3.0s; }
+.chat-bubble:nth-child(10) { animation-delay: 3.3s; }
+
+@keyframes bubbleIn {
+  0% { opacity: 0; transform: translateY(8px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.chat-bubble.q {
+  align-self: flex-end;
+  background: var(--pink);
+  color: var(--brown);
+  border-radius: 16px 16px 4px 16px;
+}
+
+.chat-bubble.a {
+  align-self: flex-start;
+  background: var(--white);
+  color: var(--brown);
+  border-radius: 16px 16px 16px 4px;
+  box-shadow: 0 1px 6px rgba(107, 76, 76, 0.06);
+}
+
+/* Divider */
+.divider {
+  text-align: center;
+  font-size: 12px;
+  color: var(--pink-mid);
+  margin: 32px 0 24px;
+  letter-spacing: 2px;
+}
+
+/* Image card */
+.info-card {
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(107, 76, 76, 0.1);
+}
+
+.info-card img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Contact */
+.contact {
+  margin-top: 24px;
+  text-align: center;
+  font-size: 14px;
+  color: var(--brown-light);
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <a href="./index.html#nav" class="back">← back to room</a>
+
+  <h1 class="page-title">Painting ✦</h1>
+
+  <div class="chat-box">
+    <div class="chat-bubble q">想定制一张画！多少钱呀</div>
+    <div class="chat-bubble a">单人65r（10×10），双人95r，三人135r（10×15），四人175r（10×15）<br>宠物+10r，背景+10r，默认空白+小装饰<br>送彩色相框，包邮 ✿</div>
+    <div class="chat-bubble q">我需要发什么给你</div>
+    <div class="chat-bubble a">发清晰正面半身照就好～按照照片进行作画<br>照片内容越丰富效果越好哦</div>
+    <div class="chat-bubble q">可以加急吗</div>
+    <div class="chat-bubble a">可以！加急20r，次日出图</div>
+    <div class="chat-bubble q">还有什么要注意的</div>
+    <div class="chat-bubble a">有要求请提前说明（颜色搭配/小图案/写小贺卡）<br>无要求我会随意搭配，画好不做大幅度修改<br>无法保证画得很像～但线上定制会更加细节和精致<br>适合作为礼物和纪念，想好再下单吧 ♡</div>
+    <div class="chat-bubble q">怎么付款</div>
+    <div class="chat-bubble a">定金30r，画好返图再补尾款～<br>🌍 Fafa1103_ 来找我就好</div>
+  </div>
+
+  <div class="divider">· · · 详细说明 · · ·</div>
+
+  <div class="info-card">
+    <img src="./painting-info.jpg" alt="画像定制说明">
+  </div>
+
+  <p class="contact">🌍Fafa1103_</p>
+</div>
+
+</body>
+</html>
