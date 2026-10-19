@@ -1,0 +1,3 @@
+Rive web runtime: @rive-app/canvas 2.44.2
+https://github.com/rive-app/rive-wasm
+License: MIT (see LICENSE)
