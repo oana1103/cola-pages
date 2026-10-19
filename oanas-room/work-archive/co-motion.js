@@ -24,7 +24,7 @@
       await loadLibrary();if(ticket!==entry.generation)return;
       const isWorking=entry.host.dataset.demo==='working';
       const instance=new rive.Rive({src:isWorking?'./work-archive/rive/working-co.riv':'./work-archive/rive/loading-studies.riv',canvas:entry.host.querySelector('canvas'),artboard:entry.artboard,stateMachines:isWorking?'Working':entry.artboard,autoplay:false,layout:new rive.Layout({fit:rive.Fit.Contain,alignment:rive.Alignment.Center}),
-        onLoad(){if(ticket!==entry.generation)return;entry.player=instance;instance.resizeDrawingSurfaceToCanvas();entry.host.querySelector('.rive-art').dataset.loaded='true';entry.host.querySelector('.rive-status').textContent=isWorking?'原生 Rive · 5.6 秒循环':'原生 Rive · 点击下方切换表情';sync(entry);},
+        onLoad(){if(ticket!==entry.generation)return;entry.player=instance;instance.resizeDrawingSurfaceToCanvas();entry.host.querySelector('.rive-art').dataset.loaded='true';entry.host.querySelector('.rive-status').textContent='';sync(entry);},
         onLoadError(){fail(entry,ticket);}
       });
       entry.player=instance;
